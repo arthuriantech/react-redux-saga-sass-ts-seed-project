@@ -222,9 +222,10 @@ export const Home = () => {
         </Card>
       </Container>
       <Container fluid>
-        <div className="card">
-          <div className="card-body">
+        <Card>
+          <Card.Body>
             <Line
+              redraw
               data={filteredData.chart1}
               options={{
                 title: {
@@ -238,11 +239,12 @@ export const Home = () => {
                 },
               }}
             />
-          </div>
-        </div>
-        <div className="card">
-          <div className="card-body">
+          </Card.Body>
+        </Card>
+        <Card>
+          <Card.Body>
             <Line
+              redraw
               data={filteredData.chart2}
               options={{
                 title: {
@@ -256,11 +258,12 @@ export const Home = () => {
                 },
               }}
             />
-          </div>
-        </div>
-        <div className="card">
-          <div className="card-body">
+          </Card.Body>
+        </Card>
+        <Card>
+          <Card.Body>
             <Line
+              redraw
               data={filteredData.chart3}
               options={{
                 title: {
@@ -274,11 +277,12 @@ export const Home = () => {
                 },
               }}
             />
-          </div>
-        </div>
-        <div className="card">
-          <div className="card-body">
+          </Card.Body>
+        </Card>
+        <Card>
+          <Card.Body>
             <Line
+              redraw
               data={filteredData.chart4}
               options={{
                 title: {
@@ -292,8 +296,8 @@ export const Home = () => {
                 },
               }}
             />
-          </div>
-        </div>
+          </Card.Body>
+        </Card>
       </Container>
     </Container>
   );
