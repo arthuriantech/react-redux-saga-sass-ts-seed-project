@@ -1,38 +1,18 @@
 import React, {useState, useEffect} from 'react';
 import {Container, Row, Col, Form, Card} from 'react-bootstrap';
 import ReactDatePicker from 'react-datepicker';
-import {FilterProps, SelectedFilters, FilteredData, filterData, fetchFilterProps} from '../services/FilterData';
+import {
+  FilterProps,
+  SelectedFilters,
+  FilteredData,
+  filterData,
+  fetchFilterProps,
+  sendFile,
+} from '../services/FilterData';
 import {Line} from 'react-chartjs-2';
 
-const state = {
-  labels: ['January', 'February', 'March', 'April', 'May'],
-  datasets: [
-    {
-      label: 'Rainfall',
-      fill: false,
-      lineTension: 0.5,
-      backgroundColor: 'rgba(75,192,192,1)',
-      borderColor: 'rgba(0,0,0,1)',
-      borderWidth: 2,
-      data: [10, 59, 30, 81, 56],
-    },
-    {
-      label: 'Rainfall',
-      fill: false,
-      lineTension: 0.5,
-      backgroundColor: 'rgba(75,192,192,1)',
-      borderColor: 'rgba(0,128,2,1)',
-      borderWidth: 2,
-      data: [10, 90, 20, 81, 56],
-    },
-  ],
-};
-
 export const Home = () => {
-  const [startDate, setStartDate] = useState<Date | null>(new Date('2014/02/08'));
-  const [endDate, setEndDate] = useState<Date | null>(new Date('2014/02/10'));
-
-  const [filteredData, setFilteredData] = useState<FilteredData>(state);
+  const [filteredData, setFilteredData] = useState<FilteredData>({});
 
   const [filterProps, setFilterProps] = useState<FilterProps>({
     from: [],
@@ -44,18 +24,26 @@ export const Home = () => {
   const [selectedFilters, setSelectedFilters] = useState<SelectedFilters>({
     from: '',
     to: '',
-    dateStart: 0,
-    dateEnd: 0,
+    startDate: new Date(),
+    endDate: new Date(),
     carType: '',
     serviceType: '',
   });
 
+  const [file, setFile] = useState<File | null>(null);
+
   useEffect(() => {
-    // fetchFilterProps().then(data => setFilterProps(data));
+    if (file) {
+      sendFile(file);
+    }
+  }, [file]);
+
+  useEffect(() => {
+    fetchFilterProps().then(data => setFilterProps(data));
   }, []);
 
   useEffect(() => {
-    // filterData(selectedFilters).then(data => setFilteredData(data));
+    filterData(selectedFilters).then(data => setFilteredData(data));
   }, [selectedFilters]);
 
   return (
@@ -65,7 +53,11 @@ export const Home = () => {
           <Card.Body>
             <Form.Group>
               <Form.Label>Загрузка файла</Form.Label>
-              <Form.Control size="sm" type="file" />
+              <Form.Control
+                type="file"
+                accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                onChange={(e: any) => setFile(e.currentTarget.value)}
+              />
             </Form.Group>
           </Card.Body>
         </Card>
@@ -123,19 +115,19 @@ export const Home = () => {
                   <Form.Label>Дата</Form.Label>
                   <Row>
                     <ReactDatePicker
-                      selected={startDate}
-                      onChange={date => setStartDate(date)}
+                      selected={selectedFilters.startDate}
+                      onChange={startDate => setSelectedFilters({...selectedFilters, startDate})}
                       selectsStart
-                      startDate={startDate}
-                      endDate={endDate}
+                      startDate={selectedFilters.startDate}
+                      endDate={selectedFilters.endDate}
                     />
                     <ReactDatePicker
-                      selected={endDate}
-                      onChange={date => setEndDate(date)}
+                      selected={selectedFilters.endDate}
+                      onChange={endDate => setSelectedFilters({...selectedFilters, endDate})}
                       selectsEnd
-                      startDate={startDate}
-                      endDate={endDate}
-                      minDate={startDate}
+                      startDate={selectedFilters.startDate}
+                      endDate={selectedFilters.endDate}
+                      minDate={selectedFilters.startDate}
                     />
                   </Row>
                 </Form.Group>
@@ -192,7 +184,7 @@ export const Home = () => {
         <div className="card">
           <div className="card-body">
             <Line
-              data={state}
+              data={filteredData.chart1}
               options={{
                 title: {
                   display: true,
@@ -210,7 +202,7 @@ export const Home = () => {
         <div className="card">
           <div className="card-body">
             <Line
-              data={state}
+              data={filteredData.chart2}
               options={{
                 title: {
                   display: true,
@@ -228,7 +220,25 @@ export const Home = () => {
         <div className="card">
           <div className="card-body">
             <Line
-              data={state}
+              data={filteredData.chart3}
+              options={{
+                title: {
+                  display: true,
+                  text: 'Average Rainfall per month',
+                  fontSize: 20,
+                },
+                legend: {
+                  display: true,
+                  position: 'right',
+                },
+              }}
+            />
+          </div>
+        </div>
+        <div className="card">
+          <div className="card-body">
+            <Line
+              data={filteredData.chart4}
               options={{
                 title: {
                   display: true,
