@@ -1,6 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import {Container, Row, Col, Form, Card} from 'react-bootstrap';
+import Card from 'react-bootstrap/Card';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Form from 'react-bootstrap/Form';
 import ReactDatePicker from 'react-datepicker';
+import ru from 'date-fns/locale/ru';
+
 import {
   FilterProps,
   SelectedFilters,
@@ -12,13 +18,19 @@ import {
 import {Line} from 'react-chartjs-2';
 
 export const Home = () => {
-  const [filteredData, setFilteredData] = useState<FilteredData>({});
+  const [filteredData, setFilteredData] = useState<FilteredData>({
+    chart1: {},
+    chart2: {},
+    chart3: {},
+    chart4: {},
+  });
 
   const [filterProps, setFilterProps] = useState<FilterProps>({
     from: [],
     to: [],
     carType: [],
     serviceType: [],
+    files: [],
   });
 
   const [selectedFilters, setSelectedFilters] = useState<SelectedFilters>({
@@ -28,9 +40,14 @@ export const Home = () => {
     endDate: new Date(),
     carType: '',
     serviceType: '',
+    file: '',
   });
 
   const [file, setFile] = useState<File | null>(null);
+
+  useEffect(() => {
+    fetchFilterProps().then(data => setFilterProps(data));
+  }, []);
 
   useEffect(() => {
     if (file) {
@@ -39,33 +56,55 @@ export const Home = () => {
   }, [file]);
 
   useEffect(() => {
-    fetchFilterProps().then(data => setFilterProps(data));
-  }, []);
-
-  useEffect(() => {
     filterData(selectedFilters).then(data => setFilteredData(data));
   }, [selectedFilters]);
 
   return (
     <Container fluid>
-      <Container>
-        <Card>
-          <Card.Body>
-            <Form.Group>
-              <Form.Label>Загрузка файла</Form.Label>
-              <Form.Control
-                type="file"
-                accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                onChange={(e: any) => setFile(e.currentTarget.value)}
-              />
-            </Form.Group>
-          </Card.Body>
-        </Card>
+      <Container fluid>
+        <Row>
+          <Col>
+            <Card>
+              <Card.Body>
+                <Form.Group>
+                  <Form.Label>Загрузка файла</Form.Label>
+                  <Form.Control
+                    type="file"
+                    accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                    onChange={(e: any) => setFile(e.currentTarget.files[0])}
+                  />
+                </Form.Group>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
       </Container>
-      <Container>
+      <Container fluid>
         <Card>
           <Card.Body>
-            <Row className="card-body">
+            <Row>
+              <Col>
+                <Form.Group>
+                  <Form.Label>Файл</Form.Label>
+                  <Form.Control
+                    size="sm"
+                    as="select"
+                    value={selectedFilters.file}
+                    onChange={e =>
+                      setSelectedFilters({
+                        ...selectedFilters,
+                        file: e.currentTarget.value,
+                      })
+                    }
+                  >
+                    {filterProps.files.map(opt => (
+                      <option key={opt} value={opt}>
+                        {opt}
+                      </option>
+                    ))}
+                  </Form.Control>
+                </Form.Group>
+              </Col>
               <Col>
                 <Form.Group>
                   <Form.Label>Откуда</Form.Label>
@@ -110,11 +149,12 @@ export const Home = () => {
                   </Form.Control>
                 </Form.Group>
               </Col>
-              <Col sm={5} className="d-flex justify-content-center">
+              <Col sm={4}>
                 <Form.Group>
                   <Form.Label>Дата</Form.Label>
-                  <Row>
+                  <Row className="d-flex justify-content-around">
                     <ReactDatePicker
+                      locale={ru}
                       selected={selectedFilters.startDate}
                       onChange={startDate => setSelectedFilters({...selectedFilters, startDate})}
                       selectsStart
@@ -122,6 +162,7 @@ export const Home = () => {
                       endDate={selectedFilters.endDate}
                     />
                     <ReactDatePicker
+                      locale={ru}
                       selected={selectedFilters.endDate}
                       onChange={endDate => setSelectedFilters({...selectedFilters, endDate})}
                       selectsEnd
@@ -180,7 +221,7 @@ export const Home = () => {
           </Card.Body>
         </Card>
       </Container>
-      <Container>
+      <Container fluid>
         <div className="card">
           <div className="card-body">
             <Line

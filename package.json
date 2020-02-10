@@ -52,5 +52,6 @@
   "devDependencies": {
     "@typescript-eslint/parser": "^2.19.0",
     "stylelint": "^13.1.0"
-  }
+  },
+  "homepage": "/xlcharts/"
 }
