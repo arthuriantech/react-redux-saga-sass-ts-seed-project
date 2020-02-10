@@ -19,10 +19,24 @@ export interface SelectedFilters {
 }
 
 export interface FilteredData {
-  chart1?: {};
-  chart2?: {};
-  chart3?: {};
-  chart4?: {};
+  chart1?: ChartOptions;
+  chart2?: ChartOptions;
+  chart3?: ChartOptions;
+  chart4?: ChartOptions;
+}
+
+export interface ChartOptions {
+  title: string;
+  labels: string[];
+  datasets: {
+    label: string;
+    fill: boolean;
+    lineTension: number;
+    backgroundColor: string;
+    borderColor: string;
+    borderWidth: number;
+    data: number[];
+  };
 }
 
 export const sendFile = async (file: File): Promise<FormData> => {

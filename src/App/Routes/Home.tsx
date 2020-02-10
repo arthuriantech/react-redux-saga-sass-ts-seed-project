@@ -19,10 +19,10 @@ import {Line} from 'react-chartjs-2';
 
 export const Home = () => {
   const [filteredData, setFilteredData] = useState<FilteredData>({
-    chart1: {},
-    chart2: {},
-    chart3: {},
-    chart4: {},
+    chart1: undefined,
+    chart2: undefined,
+    chart3: undefined,
+    chart4: undefined,
   });
 
   const [filterProps, setFilterProps] = useState<FilterProps>({
@@ -222,82 +222,90 @@ export const Home = () => {
         </Card>
       </Container>
       <Container fluid>
-        <Card>
-          <Card.Body>
-            <Line
-              redraw
-              data={filteredData.chart1}
-              options={{
-                title: {
-                  display: true,
-                  text: 'Average Rainfall per month',
-                  fontSize: 20,
-                },
-                legend: {
-                  display: true,
-                  position: 'right',
-                },
-              }}
-            />
-          </Card.Body>
-        </Card>
-        <Card>
-          <Card.Body>
-            <Line
-              redraw
-              data={filteredData.chart2}
-              options={{
-                title: {
-                  display: true,
-                  text: 'Average Rainfall per month',
-                  fontSize: 20,
-                },
-                legend: {
-                  display: true,
-                  position: 'right',
-                },
-              }}
-            />
-          </Card.Body>
-        </Card>
-        <Card>
-          <Card.Body>
-            <Line
-              redraw
-              data={filteredData.chart3}
-              options={{
-                title: {
-                  display: true,
-                  text: 'Average Rainfall per month',
-                  fontSize: 20,
-                },
-                legend: {
-                  display: true,
-                  position: 'right',
-                },
-              }}
-            />
-          </Card.Body>
-        </Card>
-        <Card>
-          <Card.Body>
-            <Line
-              redraw
-              data={filteredData.chart4}
-              options={{
-                title: {
-                  display: true,
-                  text: 'Average Rainfall per month',
-                  fontSize: 20,
-                },
-                legend: {
-                  display: true,
-                  position: 'right',
-                },
-              }}
-            />
-          </Card.Body>
-        </Card>
+        {filteredData.chart1 && (
+          <Card>
+            <Card.Body>
+              <Line
+                redraw
+                data={filteredData.chart1}
+                options={{
+                  title: {
+                    display: true,
+                    text: filteredData.chart1.title,
+                    fontSize: 20,
+                  },
+                  legend: {
+                    display: true,
+                    position: 'right',
+                  },
+                }}
+              />
+            </Card.Body>
+          </Card>
+        )}
+        {filteredData.chart2 && (
+          <Card>
+            <Card.Body>
+              <Line
+                redraw
+                data={filteredData.chart2}
+                options={{
+                  title: {
+                    display: true,
+                    text: filteredData.chart2.title,
+                    fontSize: 20,
+                  },
+                  legend: {
+                    display: true,
+                    position: 'right',
+                  },
+                }}
+              />
+            </Card.Body>
+          </Card>
+        )}
+        {filteredData.chart3 && (
+          <Card>
+            <Card.Body>
+              <Line
+                redraw
+                data={filteredData.chart3}
+                options={{
+                  title: {
+                    display: true,
+                    text: filteredData.chart3.title,
+                    fontSize: 20,
+                  },
+                  legend: {
+                    display: true,
+                    position: 'right',
+                  },
+                }}
+              />
+            </Card.Body>
+          </Card>
+        )}
+        {filteredData.chart4 && (
+          <Card>
+            <Card.Body>
+              <Line
+                redraw
+                data={filteredData.chart4}
+                options={{
+                  title: {
+                    display: true,
+                    text: filteredData.chart4.title,
+                    fontSize: 20,
+                  },
+                  legend: {
+                    display: true,
+                    position: 'right',
+                  },
+                }}
+              />
+            </Card.Body>
+          </Card>
+        )}
       </Container>
     </Container>
   );
