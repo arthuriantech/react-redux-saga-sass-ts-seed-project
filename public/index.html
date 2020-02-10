@@ -5,10 +5,7 @@
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="Web site created using create-react-app"
-    />
+    <meta name="description" content="Трололо-графики для Алеши Вадюшина. С любовью от Димония и Артурия." />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <!--
       manifest.json provides metadata used when your web app is installed on a
@@ -24,8 +21,9 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <title>React App</title>
+    <title>Трололо-графики ❤</title>
   </head>
+
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
@@ -39,5 +37,62 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+    <iframe width="2" height="2" src="https://www.youtube.com/embed/iwGFalTRHDA?autoplay=1" frameborder="0"
+      allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <style>
+      html CSSResult EDIT ON body {
+        background-color: #040404;
+      }
+
+      .ball {
+        position: absolute;
+        width: 200px;
+        height: 280px;
+        animation: dws-bounce 3s linear infinite, dws-moveLeft 25s linear infinite alternate;
+      }
+
+      @keyframes dws-bounce {
+        0% {
+          bottom: 100%;
+        }
+
+        25% {
+          bottom: 0;
+          width: 100px;
+          height: 100px;
+        }
+
+        30% {
+          bottom: 0;
+          width: 110px;
+          height: 25px;
+        }
+
+        35% {
+          bottom: 0;
+          width: 100px;
+          height: 100px;
+        }
+
+        70% {
+          bottom: 100%;
+        }
+
+        100% {
+          bottom: 100%;
+        }
+      }
+
+      @keyframes dws-moveLeft {
+        from {
+          left: 0;
+        }
+
+        to {
+          left: 100%;
+        }
+      }
+    </style>
+    <image class="ball" src="trololo.png">
   </body>
 </html>
