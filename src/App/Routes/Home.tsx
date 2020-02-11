@@ -15,15 +15,11 @@ import {
   fetchFilterProps,
   sendFile,
 } from '../services/FilterData';
-import {Line} from 'react-chartjs-2';
+import SelectControl from '../components/SelectControl';
+import LineChart from '../components/LineChart';
 
 export const Home = () => {
-  const [filteredData, setFilteredData] = useState<FilteredData>({
-    chart1: undefined,
-    chart2: undefined,
-    chart3: undefined,
-    chart4: undefined,
-  });
+  const [filteredData, setFilteredData] = useState<FilteredData>({});
 
   const [filterProps, setFilterProps] = useState<FilterProps>({
     from: [],
@@ -84,70 +80,43 @@ export const Home = () => {
           <Card.Body>
             <Row>
               <Col>
-                <Form.Group>
-                  <Form.Label>Файл</Form.Label>
-                  <Form.Control
-                    size="sm"
-                    as="select"
-                    value={selectedFilters.file}
-                    onChange={e =>
-                      setSelectedFilters({
-                        ...selectedFilters,
-                        file: e.currentTarget.value,
-                      })
-                    }
-                  >
-                    {filterProps.files.map(opt => (
-                      <option key={opt} value={opt}>
-                        {opt}
-                      </option>
-                    ))}
-                  </Form.Control>
-                </Form.Group>
+                <SelectControl
+                  label="Файл"
+                  options={filterProps.files}
+                  value={selectedFilters.file}
+                  onChange={value =>
+                    setSelectedFilters({
+                      ...selectedFilters,
+                      file: value,
+                    })
+                  }
+                />
               </Col>
               <Col>
-                <Form.Group>
-                  <Form.Label>Откуда</Form.Label>
-                  <Form.Control
-                    size="sm"
-                    as="select"
-                    value={selectedFilters.from}
-                    onChange={e =>
-                      setSelectedFilters({
-                        ...selectedFilters,
-                        from: e.currentTarget.value,
-                      })
-                    }
-                  >
-                    {filterProps.from.map(opt => (
-                      <option key={opt} value={opt}>
-                        {opt}
-                      </option>
-                    ))}
-                  </Form.Control>
-                </Form.Group>
+                <SelectControl
+                  label="Откуда"
+                  options={filterProps.from}
+                  value={selectedFilters.from}
+                  onChange={value =>
+                    setSelectedFilters({
+                      ...selectedFilters,
+                      from: value,
+                    })
+                  }
+                />
               </Col>
               <Col>
-                <Form.Group>
-                  <Form.Label>Куда</Form.Label>
-                  <Form.Control
-                    size="sm"
-                    as="select"
-                    value={selectedFilters.to}
-                    onChange={e =>
-                      setSelectedFilters({
-                        ...selectedFilters,
-                        to: e.currentTarget.value,
-                      })
-                    }
-                  >
-                    {filterProps.to.map(opt => (
-                      <option key={opt} value={opt}>
-                        {opt}
-                      </option>
-                    ))}
-                  </Form.Control>
-                </Form.Group>
+                <SelectControl
+                  label="Куда"
+                  options={filterProps.to}
+                  value={selectedFilters.to}
+                  onChange={value =>
+                    setSelectedFilters({
+                      ...selectedFilters,
+                      to: value,
+                    })
+                  }
+                />
               </Col>
               <Col sm={4}>
                 <Form.Group>
@@ -160,6 +129,7 @@ export const Home = () => {
                       selectsStart
                       startDate={selectedFilters.startDate}
                       endDate={selectedFilters.endDate}
+                      dateFormat="dd/MM/yyyy"
                     />
                     <ReactDatePicker
                       locale={ru}
@@ -169,143 +139,46 @@ export const Home = () => {
                       startDate={selectedFilters.startDate}
                       endDate={selectedFilters.endDate}
                       minDate={selectedFilters.startDate}
+                      dateFormat="dd/MM/yyyy"
                     />
                   </Row>
                 </Form.Group>
               </Col>
               <Col>
-                <Form.Group>
-                  <Form.Label>Тип услуги</Form.Label>
-                  <Form.Control
-                    size="sm"
-                    as="select"
-                    value={selectedFilters.serviceType}
-                    onChange={e =>
-                      setSelectedFilters({
-                        ...selectedFilters,
-                        serviceType: e.currentTarget.value,
-                      })
-                    }
-                  >
-                    {filterProps.serviceType.map(opt => (
-                      <option key={opt} value={opt}>
-                        {opt}
-                      </option>
-                    ))}
-                  </Form.Control>
-                </Form.Group>
+                <SelectControl
+                  label="Тип услуги"
+                  options={filterProps.serviceType}
+                  value={selectedFilters.serviceType}
+                  onChange={value =>
+                    setSelectedFilters({
+                      ...selectedFilters,
+                      serviceType: value,
+                    })
+                  }
+                />
               </Col>
               <Col>
-                <Form.Group>
-                  <Form.Label>Тип тачки</Form.Label>
-                  <Form.Control
-                    size="sm"
-                    as="select"
-                    value={selectedFilters.carType}
-                    onChange={e =>
-                      setSelectedFilters({
-                        ...selectedFilters,
-                        carType: e.currentTarget.value,
-                      })
-                    }
-                  >
-                    {filterProps.carType.map(opt => (
-                      <option key={opt} value={opt}>
-                        {opt}
-                      </option>
-                    ))}
-                  </Form.Control>
-                </Form.Group>
+                <SelectControl
+                  label="Тип тачки"
+                  options={filterProps.carType}
+                  value={selectedFilters.carType}
+                  onChange={value =>
+                    setSelectedFilters({
+                      ...selectedFilters,
+                      carType: value,
+                    })
+                  }
+                />
               </Col>
             </Row>
           </Card.Body>
         </Card>
       </Container>
       <Container fluid>
-        {filteredData.chart1 && (
-          <Card>
-            <Card.Body>
-              <Line
-                redraw
-                data={filteredData.chart1}
-                options={{
-                  title: {
-                    display: true,
-                    text: filteredData.chart1.title,
-                    fontSize: 20,
-                  },
-                  legend: {
-                    display: true,
-                    position: 'right',
-                  },
-                }}
-              />
-            </Card.Body>
-          </Card>
-        )}
-        {filteredData.chart2 && (
-          <Card>
-            <Card.Body>
-              <Line
-                redraw
-                data={filteredData.chart2}
-                options={{
-                  title: {
-                    display: true,
-                    text: filteredData.chart2.title,
-                    fontSize: 20,
-                  },
-                  legend: {
-                    display: true,
-                    position: 'right',
-                  },
-                }}
-              />
-            </Card.Body>
-          </Card>
-        )}
-        {filteredData.chart3 && (
-          <Card>
-            <Card.Body>
-              <Line
-                redraw
-                data={filteredData.chart3}
-                options={{
-                  title: {
-                    display: true,
-                    text: filteredData.chart3.title,
-                    fontSize: 20,
-                  },
-                  legend: {
-                    display: true,
-                    position: 'right',
-                  },
-                }}
-              />
-            </Card.Body>
-          </Card>
-        )}
-        {filteredData.chart4 && (
-          <Card>
-            <Card.Body>
-              <Line
-                redraw
-                data={filteredData.chart4}
-                options={{
-                  title: {
-                    display: true,
-                    text: filteredData.chart4.title,
-                    fontSize: 20,
-                  },
-                  legend: {
-                    display: true,
-                    position: 'right',
-                  },
-                }}
-              />
-            </Card.Body>
-          </Card>
-        )}
+        <LineChart data={filteredData.chart1} />
+        <LineChart data={filteredData.chart2} />
+        <LineChart data={filteredData.chart3} />
+        <LineChart data={filteredData.chart4} />
       </Container>
     </Container>
   );
